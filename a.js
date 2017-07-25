@@ -126,7 +126,7 @@ function clear(){
 
 function calculateMags(freq){
 	//var groups=[6,6,6,6,8,8,12,12,16,16,16,16,64,64,128,128];
-	var groups=[2,2,4,4,10,10,8,8,24,24,22,22,30,30,28,28];
+	var groups=[2,2,4,4,8,8,10,10,22,22,24,24,28,28,30,30];
 	var mags=new Array();
 	
 	var c,d;
