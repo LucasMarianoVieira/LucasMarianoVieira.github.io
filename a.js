@@ -148,7 +148,7 @@ function drawMags(mags){
 	var d=0;
 	for(var c=0;c<=16;c++){
 		var magmedia=mags[c];
-		ctx.fillRect(c*32+10,10,30,20*magmedia);
+		ctx.fillRect(c*32+10,10,30,10*magmedia);
 		
 	}
 	
