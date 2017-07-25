@@ -96,7 +96,7 @@ function setup(){
 
 function animate(levels){
 	var out=new Array();
-	var speed=1;
+	var speed=6;
 	var c;
 	for(c=0;c<levels.length;c++){
 		if(levels[c]>=speed){
@@ -137,7 +137,7 @@ function calculateMags(freq){
 			aux+= Math.sqrt( Math.pow( freq[off].real,2 )+ Math.pow(freq[off].imag ,2 ));
 			off++;
 		}
-		aux=aux/groups[d];
+		aux=20*aux/groups[d];
 		mags[d]=aux;
 	}
 	return mags;
@@ -148,7 +148,7 @@ function drawMags(mags){
 	var d=0;
 	for(var c=0;c<=16;c++){
 		var magmedia=mags[c];
-		ctx.fillRect(c*32+10,10,30,10*magmedia);
+		ctx.fillRect(c*32+10,10,30,magmedia);
 		
 	}
 	
