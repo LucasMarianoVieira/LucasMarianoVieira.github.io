@@ -51,7 +51,7 @@ ctx.fillStyle="green";
 
 
 function setup(){
-	var up=20;
+	var up=10;
 	var fps=30;
 	var inc=audioBuffer.sampleRate/up;
 	samples= (audioBuffer.getChannelData(0)).slice(0);
@@ -77,7 +77,7 @@ function setup(){
 		
 		var f=FFT(data);
 		
-		mags=calcularMags(f);
+		mags=calculateMags(f);
 		lev=updateLevels(mags,lev);
 				
 		index=index+inc;
@@ -86,9 +86,9 @@ function setup(){
 	play(audioBuffer);
 	
 	setInterval(function(){
-		limpar();
+		clear();
 		lev=animate(lev);
-		desenharMags(lev);
+		drawMags(lev);
 		
 	},33);
 	
@@ -120,12 +120,13 @@ function updateLevels(mags,levels){
 	return out;
 }
 
-function limpar(){
+function clear(){
 	ctx.clearRect(0,0,600,400);
 }
 
-function calcularMags(freq){
-	var groups=[6,6,6,6,8,8,12,12,16,16,16,16,64,64,128,128];
+function calculateMags(freq){
+	//var groups=[6,6,6,6,8,8,12,12,16,16,16,16,64,64,128,128];
+	var groups=[4,4,4,4,8,8,8,8,24,24,24,24,28,28,28,28];
 	var mags=new Array();
 	
 	var c,d;
@@ -142,12 +143,12 @@ function calcularMags(freq){
 	return mags;
 }
 
-function desenharMags(mags){
+function drawMags(mags){
 	
 	var d=0;
 	for(var c=0;c<=16;c++){
 		var magmedia=mags[c];
-		ctx.fillRect(c*32+10,10,30,40*magmedia);
+		ctx.fillRect(c*32+10,10,30,20*magmedia);
 		
 	}
 	
