@@ -36,8 +36,8 @@ var openFile = function(event) {
 
 	readFile(input.files[0],function (){
 		buf=reader.result;
+		context.decodeAudioData(buf,function (data){ audioBuffer=data; setup()});
 		console.log("loaded");
-		context.decodeAudioData(buf,function (data){ audioBuffer=data});
 	})
 };
 		
@@ -49,12 +49,11 @@ ctx.scale(1,-1);
 ctx.translate(-300,-200);
 ctx.fillStyle="green";
 
-var bstart= document.getElementById("start");
-bstart.onclick=function (e){
-	setup();
-}
 
 function setup(){
+	var up=20;
+	var fps=30;
+	var inc=audioBuffer.sampleRate/up;
 	samples= (audioBuffer.getChannelData(0)).slice(0);
 	var c;
 	for(c=0;c<n;c++){
@@ -62,7 +61,7 @@ function setup(){
 	}
 	
 	setInterval(function (){
-		var toCopy= samples.slice(index,index+4800);
+		var toCopy= samples.slice(index,index+inc);
 		
 		
 		
@@ -70,7 +69,7 @@ function setup(){
 		var c;
 		for(c=0;c<n;c++){
 			var ct={
-				real:toCopy[c*8],
+				real:toCopy[c*Math.floor(inc/n)],
 				imag:0				
 			};
 			data[c]=ct;
@@ -81,8 +80,8 @@ function setup(){
 		mags=calcularMags(f);
 		lev=updateLevels(mags,lev);
 				
-		index=index+4800;
-	},50);
+		index=index+inc;
+	},1000/up);
 	
 	play(audioBuffer);
 	
@@ -91,7 +90,7 @@ function setup(){
 		lev=animate(lev);
 		desenharMags(lev);
 		
-	},30);
+	},33);
 	
 }
 
@@ -148,7 +147,7 @@ function desenharMags(mags){
 	var d=0;
 	for(var c=0;c<=16;c++){
 		var magmedia=mags[c];
-		ctx.fillRect(c*32+10,10,30,20*magmedia);
+		ctx.fillRect(c*32+10,10,30,40*magmedia);
 		
 	}
 	
