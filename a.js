@@ -44,9 +44,13 @@ var openFile = function(event) {
 var canvas= document.getElementById("canvas");
 var ctx=canvas.getContext("2d");	
 
+//ctx.translate(300,200);
+//ctx.scale(1,-1);
+//ctx.translate(-300,-200);
+
 ctx.translate(300,200);
-ctx.scale(1,-1);
-ctx.translate(-300,-200);
+ctx.rotate(-Math.PI/2);
+
 ctx.fillStyle="green";
 
 
@@ -96,7 +100,7 @@ function setup(){
 
 function animate(levels){
 	var out=new Array();
-	var speed=6;
+	var speed=10;
 	var c;
 	for(c=0;c<levels.length;c++){
 		if(levels[c]>=speed){
@@ -121,12 +125,13 @@ function updateLevels(mags,levels){
 }
 
 function clear(){
-	ctx.clearRect(0,0,600,400);
+	ctx.clearRect(-1000,-1000,2000,2000);
 }
 
 function calculateMags(freq){
-	//var groups=[6,6,6,6,8,8,12,12,16,16,16,16,64,64,128,128];
-	var groups=[2,2,4,4,8,8,10,10,22,22,24,24,28,28,30,30];
+	var groups=[6,6,6,6,8,8,12,12,16,16,16,16,64,64,128,128];
+	//var groups=[2,2,2,2,6,8,8,8,8,24,24,24,28,30,36,44];
+	//var groups=[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32];
 	var mags=new Array();
 	
 	var c,d;
@@ -137,7 +142,10 @@ function calculateMags(freq){
 			aux+= Math.sqrt( Math.pow( freq[off].real,2 )+ Math.pow(freq[off].imag ,2 ));
 			off++;
 		}
-		aux=20*aux/groups[d];
+		aux=30*aux/groups[d];
+		if(aux>200){
+			aux=200;			
+		}		
 		mags[d]=aux;
 	}
 	return mags;
@@ -145,12 +153,49 @@ function calculateMags(freq){
 
 function drawMags(mags){
 	
-	var d=0;
+	/*var d=0;
 	for(var c=0;c<=16;c++){
 		var magmedia=mags[c];
 		ctx.fillRect(c*32+10,10,30,magmedia);
 		
+	}*/
+	
+	/*var inc=2*Math.PI/16;
+	
+	for(var c=0;c<=16;c++){
+		var magmedia=mags[c];
+		
+		ctx.rotate(c*inc);
+		ctx.fillRect(0,-5,100+magmedia,10);
+		ctx.rotate(-c*inc);
+		
 	}
+	
+	ctx.rotate(2*Math.PI/240);*/
+	
+	var inc=2*Math.PI/16;
+	ctx.beginPath();
+	ctx.moveTo(30+mags[0],0);
+	
+	for(var c=0;c<=16;c++){
+		var magmedia=mags[c];
+		
+		ctx.rotate(c*inc);
+		ctx.rotate(-inc/2);
+		ctx.lineTo(30,0);
+		ctx.rotate(inc/2);
+		ctx.lineTo(30+magmedia,0);
+		ctx.rotate(inc/2);
+		ctx.lineTo(30,0);
+		ctx.rotate(-inc/2);
+		ctx.rotate(-c*inc);
+		
+	}
+	ctx.lineTo(30+mags[0],0);
+	ctx.stroke();
+	ctx.closePath();
+	
+	ctx.rotate(2*Math.PI/240);
 	
 }
 
